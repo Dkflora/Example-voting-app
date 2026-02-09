@@ -5,12 +5,12 @@ on:
     branches: ["main"]
     paths:
       - "result/**"
-      - ".github/workflows/result-ecr-trivy.yaml"
+      - ".github/workflows/call-docker-build-result.yaml"
   pull_request:
     branches: ["main"]
     paths:
       - "result/**"
-      - ".github/workflows/call-docker-build-result.yaml"
+      - ".github/workflows/result-ecr-trivy.yaml"
 
 permissions:
   contents: read
@@ -29,15 +29,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure AWS (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to ECR
-        uses: aws-actions/amazon-ecr-login@v2
-
       - name: Build Docker image
         run: docker build -t result:latest ./result
 
@@ -55,10 +46,20 @@ jobs:
         with:
           sarif_file: "trivy-result.sarif"
 
+      - name: Configure AWS (OIDC)
+        if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        uses: aws-actions/amazon-ecr-login@v2
+
       - name: Push to ECR (main only)
         if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         run: |
           IMAGE="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest"
           docker tag result:latest "$IMAGE"
           docker push "$IMAGE"
-

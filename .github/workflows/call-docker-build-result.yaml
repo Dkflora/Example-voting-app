@@ -30,12 +30,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build Docker image
-        run: docker build -t result:latest ./result
+        run: docker build -t result:v2 ./result
 
       - name: Trivy scan
         uses: aquasecurity/trivy-action@0.33.1
         with:
-          image-ref: "result:latest"
+          image-ref: "result:v2"
           format: "sarif"
           output: "trivy-result.sarif"
           severity: "CRITICAL,HIGH"
@@ -60,6 +60,6 @@ jobs:
       - name: Push to ECR (main only)
         if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         run: |
-          IMAGE="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:latest"
-          docker tag result:latest "$IMAGE"
+          IMAGE="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:v2"
+          docker tag result:v2 "$IMAGE"
           docker push "$IMAGE"

@@ -15,5 +15,5 @@ spec:
         app: worker
     spec:
       containers:
-      - image: dkflora/worker:v1
+      - image: 008984192600.dkr.ecr.us-east-1.amazonaws.com/uat-app@sha256:6689c6ca8fa1fc8cd83c25089ba929d78f30d07dc2af1567783212272a853849
         name: worker

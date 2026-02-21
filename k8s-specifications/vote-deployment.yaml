@@ -15,7 +15,7 @@ spec:
         app: vote
     spec:
       containers:
-      - image: dkflora/vote:v1
+      - image: 008984192600.dkr.ecr.us-east-1.amazonaws.com/uat-app@sha256:6a07eab3f5c632c10b2b7f4577328f172603786222b28bb6400ef43a1bc73d98
         name: vote
         ports:
         - containerPort: 80

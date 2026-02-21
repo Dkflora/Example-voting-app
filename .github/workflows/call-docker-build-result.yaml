@@ -22,6 +22,8 @@ env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
   ECR_REPO: ${{ secrets.ECR_REPO }}
+  SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 jobs:
   result:
@@ -29,8 +31,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      
+      - name: SonarQube Scan (Result)
+        uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          projectBaseDir: result
+          args: >
+            -Dsonar.projectKey=result
+            -Dsonar.sources=.
+
       - name: Build Docker image
-        run: docker build -t result:v2 ./result
+        run: docker build -t result:v2.1 ./result
 
       - name: Trivy scan
         uses: aquasecurity/trivy-action@0.33.1
@@ -61,5 +72,5 @@ jobs:
         if: github.event_name == 'push' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
         run: |
           IMAGE="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO}:v2"
-          docker tag result:v2 "$IMAGE"
+          docker tag result:v2.1 "$IMAGE"
           docker push "$IMAGE"

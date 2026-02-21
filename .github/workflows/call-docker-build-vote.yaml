@@ -24,7 +24,6 @@ env:
   ECR_REPO: ${{ secrets.ECR_REPO }}
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  
 
 jobs:
   vote:
@@ -32,7 +31,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      
       - name: SonarQube Scan (Vote)
         uses: SonarSource/sonarqube-scan-action@v5
         with:
@@ -47,7 +45,7 @@ jobs:
       - name: Trivy scan
         uses: aquasecurity/trivy-action@0.33.1
         with:
-          image-ref: "vote:v1"
+          image-ref: "vote:v1.1"
           format: "sarif"
           output: "trivy-vote.sarif"
           severity: "CRITICAL,HIGH"

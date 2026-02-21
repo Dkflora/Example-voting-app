@@ -46,7 +46,7 @@ jobs:
       - name: Trivy scan
         uses: aquasecurity/trivy-action@0.33.1
         with:
-          image-ref: "result:v2"
+          image-ref: "result:v2.1"
           format: "sarif"
           output: "trivy-result.sarif"
           severity: "CRITICAL,HIGH"

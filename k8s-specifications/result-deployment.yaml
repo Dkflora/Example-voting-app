@@ -15,7 +15,7 @@ spec:
         app: result
     spec:
       containers:
-      - image: 008984192600.dkr.ecr.us-east-1.amazonaws.com/uat-app@sha256:9d3c2efe10a1d94e08200f945052b2866b863718aa5b0089c3ed660e22f081c3
+      - image: 008984192600.dkr.ecr.us-east-1.amazonaws.com/uat-app@sha256:6689c6ca8fa1fc8cd83c25089ba929d78f30d07dc2af1567783212272a853849
         name: result
         ports:
         - containerPort: 80

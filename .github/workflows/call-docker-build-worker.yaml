@@ -44,7 +44,7 @@ jobs:
         run: docker build -t worker:v3.1 ./worker
 
       - name: Trivy scan
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           image-ref: "worker:v3.1"
           format: "sarif"

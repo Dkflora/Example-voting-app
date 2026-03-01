@@ -33,7 +33,7 @@ jobs:
 
       
       - name: SonarQube Scan (Result)
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@v7
         with:
           projectBaseDir: result
           args: >

@@ -43,7 +43,7 @@ jobs:
         run: docker build -t vote:v1.1 ./vote
 
       - name: Trivy scan
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           image-ref: "vote:v1.1"
           format: "sarif"
